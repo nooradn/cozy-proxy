@@ -1,0 +1,11 @@
+{
+  "name": "bun-cors-proxy",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "bun index.ts"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  }
+}
