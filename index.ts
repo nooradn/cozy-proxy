@@ -15,7 +15,7 @@ const server = Bun.serve({
     const isAllowedIP = allowedIPs.includes(clientIP);
 
     if (!isAllowedOrigin && !isAllowedIP) {
-      return new Response("Orgin or IP is not allowed", { status: 403 });
+      return new Response("Origin or IP is not allowed", { status: 403 });
     }
 
     if (!targetUrl) {
@@ -29,14 +29,13 @@ const server = Bun.serve({
       return new Response("Failed to fetch target: " + (err as Error).message, { status: 500 });
     }
 
-    const contentType = targetResp.headers.get("content-type") || "application/octet-stream";
+    // Return stream directly, preserve headers
+    const headers = new Headers(targetResp.headers);
+    headers.set("Access-Control-Allow-Origin", origin || "*");
 
     return new Response(targetResp.body, {
       status: targetResp.status,
-      headers: {
-        "Access-Control-Allow-Origin": origin || "*", 
-        "Content-Type": contentType,
-      },
+      headers,
     });
   },
 });
